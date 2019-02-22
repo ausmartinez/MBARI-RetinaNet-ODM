@@ -1,0 +1,24 @@
+<annotation>
+    <annotator>Paul McGill</annotator>
+    <folder>preprocessed</folder>
+    <filename>StaM_6701_NF_tripod_20161112_08_19_01p.JPG</filename>
+    <size>
+        <width>1000</width>
+        <height>667</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>Scotoplanes globosa</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <occluded>0</occluded>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>67</xmin>
+            <ymin>16</ymin>
+            <xmax>149</xmax>
+            <ymax>66</ymax>
+        </bndbox>
+    </object>
+</annotation>

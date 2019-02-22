@@ -1,0 +1,24 @@
+<annotation>
+    <annotator>Paul McGill</annotator>
+    <folder>preprocessed</folder>
+    <filename>StaM_6701_NF_tripod_20161111_09_21_51p.JPG</filename>
+    <size>
+        <width>1000</width>
+        <height>667</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>Peniagone sp. A</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <occluded>0</occluded>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>31</xmin>
+            <ymin>19</ymin>
+            <xmax>92</xmax>
+            <ymax>48</ymax>
+        </bndbox>
+    </object>
+</annotation>

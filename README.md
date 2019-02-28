@@ -1,8 +1,8 @@
 # MBARI-RetinaNet-ODM
 
 * Andrea Cano
+* Sampson Liao
 * Austin Martinez
-* Sampson  Liao
 * Kirk Worley
 
 ## MacOS Installation

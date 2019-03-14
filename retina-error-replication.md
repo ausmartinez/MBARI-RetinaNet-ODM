@@ -31,7 +31,7 @@ python tpu/models/official/retinanet/retinanet_main.py \
  --num_epochs=1
 ```
 
- ` --training_file_pattern=${STORAGE_BUCKET}/pathTo/TFRecords/*train* \` is the only     line that differs from the tutorial. We feel this should get the most attention as i    t points to the TFRecords we uploaded to the bucket.
+ ` --training_file_pattern=${STORAGE_BUCKET}/pathTo/TFRecords/*train* \` is the only     line that differs from the tutorial. We feel this should get the most attention as it points to the TFRecords we uploaded to the bucket.
 
 It will take a few moments to eventually stop running, but you should expect an error similar to this.
 

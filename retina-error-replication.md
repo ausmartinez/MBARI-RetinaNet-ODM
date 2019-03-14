@@ -31,9 +31,9 @@ python tpu/models/official/retinanet/retinanet_main.py \
  --num_epochs=1
 ```
 
-It will take a few moments to to eventually stop running, but you should expect an error similar to this.
+ ` --training_file_pattern=${STORAGE_BUCKET}/pathTo/TFRecords/*train* \` is the only     line that differs from the tutorial. We feel this should get the most attention as i    t points to the TFRecords we uploaded to the bucket.
 
-` --training_file_pattern=${STORAGE_BUCKET}/pathTo/TFRecords/*train* \` is the only line that differs from the tutorial. We feel this should get the most attention as it points to the TFRecords we uploaded to the bucket. 
+It will take a few moments to to eventually stop running, but you should expect an error similar to this.
 
 ```
 Error recorded from infeed: StringToNumberOp could not norrectly convert string: StaM_6701_NF_tripod_20161114_03_13_42.JPG

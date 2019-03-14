@@ -1,6 +1,6 @@
 # Replicating the errors
 
-Follow the GCP tutorial up until the `Prepare the COCO dataset` section. In this section, the user downloads 100Gb of photos, which are then converted into TFRecords. These TFRecords are then copied over to your GCP Bucket. But we want to use the TFRecords for our own dataset. 
+Follow the [GCP tutorial](https://cloud.google.com/tpu/docs/tutorials/retinanet) up until the `Prepare the COCO dataset` section. In this section, the user downloads 100Gb of photos, which are then converted into TFRecords. These TFRecords are then copied over to your GCP Bucket. But we want to use the TFRecords for our own dataset. 
 
 Instead, simply upload your TFRecords directly into the bucket. Then we try to run through the rest of the steps after `Prepare the COCO dataset` except changing names and directories when needed. 
 

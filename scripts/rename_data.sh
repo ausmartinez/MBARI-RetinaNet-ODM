@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Ideally place in the same directory as the train.sh script
+
 while getopts a:i: options; do
   case $options in
     a) anno_dir=$OPTARG;;

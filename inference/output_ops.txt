@@ -1,0 +1,220 @@
+{'image': name: "Reshape:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 640
+  }
+  dim {
+    size: 640
+  }
+  dim {
+    size: 3
+  }
+}
+, 'box_outputs_all': name: "map_1/TensorArrayStack_3/TensorArrayGatherV3:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 5000
+  }
+  dim {
+    size: 4
+  }
+}
+, 'classes_all': name: "map_1/TensorArrayStack_1/TensorArrayGatherV3:0"
+dtype: DT_INT32
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 5000
+  }
+}
+, 'cls_outputs_3': name: "retinanet/class_net/class-predict/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 80
+  }
+  dim {
+    size: 80
+  }
+  dim {
+    size: 810
+  }
+}
+, 'cls_outputs_4': name: "retinanet/class_net/class-predict_1/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 40
+  }
+  dim {
+    size: 40
+  }
+  dim {
+    size: 810
+  }
+}
+, 'cls_outputs_5': name: "retinanet/class_net/class-predict_2/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 20
+  }
+  dim {
+    size: 20
+  }
+  dim {
+    size: 810
+  }
+}
+, 'cls_outputs_6': name: "retinanet/class_net/class-predict_3/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 10
+  }
+  dim {
+    size: 10
+  }
+  dim {
+    size: 810
+  }
+}
+, 'box_outputs_3': name: "retinanet/box_net/box-predict/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 80
+  }
+  dim {
+    size: 80
+  }
+  dim {
+    size: 36
+  }
+}
+, 'box_outputs_4': name: "retinanet/box_net/box-predict_1/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 40
+  }
+  dim {
+    size: 40
+  }
+  dim {
+    size: 36
+  }
+}
+, 'cls_outputs_7': name: "retinanet/class_net/class-predict_4/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 5
+  }
+  dim {
+    size: 5
+  }
+  dim {
+    size: 810
+  }
+}
+, 'box_outputs_5': name: "retinanet/box_net/box-predict_2/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 20
+  }
+  dim {
+    size: 20
+  }
+  dim {
+    size: 36
+  }
+}
+, 'box_outputs_6': name: "retinanet/box_net/box-predict_3/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 10
+  }
+  dim {
+    size: 10
+  }
+  dim {
+    size: 36
+  }
+}
+, 'box_outputs_7': name: "retinanet/box_net/box-predict_4/BiasAdd:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 5
+  }
+  dim {
+    size: 5
+  }
+  dim {
+    size: 36
+  }
+}
+, 'cls_outputs_all': name: "map_1/TensorArrayStack_2/TensorArrayGatherV3:0"
+dtype: DT_FLOAT
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 5000
+  }
+}
+, 'indices_all': name: "map_1/TensorArrayStack/TensorArrayGatherV3:0"
+dtype: DT_INT32
+tensor_shape {
+  dim {
+    size: -1
+  }
+  dim {
+    size: 5000
+  }
+}
+}

@@ -1,0 +1,8 @@
+{'image_bytes': name: "Placeholder:0"
+dtype: DT_STRING
+tensor_shape {
+  dim {
+    size: -1
+  }
+}
+}

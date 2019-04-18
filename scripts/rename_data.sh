@@ -23,7 +23,7 @@ rename_xml(){
   mv "${1}" "${numfullpath}" 2> /dev/null  # data/annotations/123.xml
 
   # add to train.txt list
-  echo "${numfullpath}" >> "${anno_dir}train.txt"
+  echo "${numname}.${extension}" >> "${anno_dir}train.txt"
 }
 
 rename_jpg(){

@@ -5,7 +5,7 @@
 * Austin Martinez
 * Kirk Worley
 
-## MacOS Installation
+## Install
 System will require [Docker](https://www.docker.com/) and [Python 3](https://www.python.org/download/releases/3.0/).
 
 * Run a `git pull` on this repository

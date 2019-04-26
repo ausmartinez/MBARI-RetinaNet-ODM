@@ -5,18 +5,71 @@
 #	display asking if you wish to overwrite it.
 # Usage: ./generate_labels PATH_TO_ANN
 #	PATH_TO_ANN: Path to annotations folder containing XML files.
+PROGNAME=$0
 
+# Argument: Invalid flag provided.
+invalid_flag() {
+	echo Invalid flag. Use -h to display the usage options.
+	exit 1
+}
+
+# Argument: -h
+usage() {
+  cat << EOF >&2
+Usage: $PROGNAME [-h] [-d <dir>] [-s <dir>]
+
+-h: Displays the usage message.
+-d <dir>: Filepath to the directory containing the annotations. Example: data/annotations.
+-s <dir>: Directory in which to place the label.pbtxt file. If the directory does not exist, it will be created. Default directory is current directory.
+EOF
+  exit 1
+}
+
+# Need arguments to run.
 if [[ $# -eq 0 ]] ;
 then
-	echo "Please provide a filepath to the annotations. If the annotations are in the current folder, use '.'"
-	echo "Example usage: ./generate_labels data/annotations"
-	exit 0
+	invalid_flag
 fi
 
-if [ -f "label.pbtxt" ]
+# Parse arguments from flags using getopts.
+dir="" savepath="."
+while getopts d:s:h o; do
+  case $o in
+    (d) dir=$OPTARG;;
+    (s) savepath=$OPTARG;;
+	(h) usage;;
+    (*) invalid_flag
+  esac
+done
+shift "$((OPTIND - 1))"
+
+# Does directory to save in exist?
+if [ -d $savepath ]
+then
+	if [ $savepath = "." ]
+	then
+		echo "Generating label.pbtxt in current folder."
+	else
+		echo "Generating label.pbtxt in "$savepath"."
+	fi
+else
+	echo $savepath "does not exist. Creating it."
+	mkdir -p $savepath
+fi
+
+# Does directory to annotations exist?
+if [ ! -d $dir ]
+then
+	echo "[ERROR]: Directory '"$dir"' does not exist. Exiting."
+	exit 1
+else
+	echo "[LABELS]: Generating labels from XML files in "$dir"."
+fi
+
+if [ -f $savepath"/label.pbtxt" ]
 then
 	while true; do
-		read -p "[LABELS]: A label.pbtxt file already exists in the current folder. Do you wish to overwrite it? (y/n): " yn
+		read -p "[LABELS]: A label.pbtxt file already exists in the desired folder. Do you wish to overwrite it? (y/n): " yn
 		case $yn in
 			[Yy]* ) break;;
 			[Nn]* ) exit 0;;
@@ -25,13 +78,7 @@ then
 	done
 fi
 
-if [ $1 = "." ];
-then
-	echo "[LABELS]: Generating label.pbxt from annotations located in current directory."
-else
-	echo "[LABELS]: Generating label.pbtxt from annotations located in: $1."
-fi
-
+# Generate label.pbtxt using AWK.
 awk '
 # function to check if name exists in array already.
 function smartmatch(d, r, x, y) {
@@ -54,7 +101,8 @@ BEGIN {
 			idx = i+1
 			entity_name = ""
 			while($idx != "/name") {
-				entity_name = (entity_name == "") ? ($idx) : (entity_name " " $idx)
+				entity_name = (entity_name == "") ? ($idx) : (entity_name "_" $idx)
+				entity_name = toupper(entity_name)
 				idx += 1
 			}
 			if(!smartmatch(entity_name, entities)) {
@@ -70,7 +118,7 @@ END {
 	for(k in entities) {
 		print "item {"
 		print "\tid: " k
-		print "\tname: " "\x27"entities[k]"\x27"
+		print "\tname: \x27" entities[k] "\x27"
 		print "}"
 	}
-}' $1/*.xml > label.pbtxt
+}' $dir/*.xml > $savepath/label.pbtxt

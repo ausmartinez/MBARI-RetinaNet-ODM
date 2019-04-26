@@ -134,6 +134,5 @@ awk -v outdir="$dir" '
 	/<\/image>/ {
 		# Close annotation tag.
 		print "</annotation>" > full_path
-	}
-	
+	}	
 ' $file

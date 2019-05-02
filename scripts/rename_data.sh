@@ -1,7 +1,9 @@
 #!/bin/sh
 
-# Place in the same directory as the train.sh script
+# Purpose: Rename images and corresponding XML filenames to only the numeric characters (including filenames in XML files)
+# Output xml filenames in a 1:4 ratio to test.txt:train.txt
 
+# Usage: ./rename_data.sh [-d <annotation_dir>] [-i <img_dir>]
 rename_xml(){
   # grab filename and extension
   filepath="${1%.*}"               # data/annotations/STAM123
@@ -23,7 +25,12 @@ rename_xml(){
   mv "${1}" "${numfullpath}" 2> /dev/null  # data/annotations/123.xml
 
   # add to train.txt list
-  echo "${numname}.${extension}" >> "${anno_dir}train.txt"
+  if [ $(($RANDOM%10)) -ge 2 ]
+  then
+    echo "${numname}.${extension}" >> "${anno_dir}train.txt"
+  else
+    echo "${numname}.${extension}" >> "${anno_dir}test.txt"
+  fi
 }
 
 rename_jpg(){
@@ -62,6 +69,7 @@ echo "images directory = $imgs_dir"
 read -p "Proceed with renaming? (y/n) " -n 1 -r
 echo
 
+RANDOM=$$
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -71,6 +79,7 @@ then
   anno_dir="${anno_dir%/}/"
 
   rm "${anno_dir}train.txt"
+  rm "${anno_dir}test.txt"
 
   for file in ${anno_dir}*.xml
   do

@@ -65,9 +65,6 @@ awk -v outdir="$dir" '
 	BEGIN {
 		# Field separators.
 		FS="[< >\"]"
-		
-		# This is how to print to dir
-		# print "I am a file." > outdir"/1.xml"
 	}
 	
 	# First, parse the metadata, which should only occur once, and should
@@ -87,9 +84,8 @@ awk -v outdir="$dir" '
 		annotation_img_width = $12
 		annotation_img_height = $15
 		
-		# Once an image tag is located, we are creating a new XML file. This tag
-		# will preceed <box> tags, so we must first print the metadata to the new
-		# XML file.
+		# Once an image tag is located, create a new XML file using previously parsed metadata.
+		# This tag should preced subsequent <box> tags.
 		full_path = outdir "/" new_annotation_filename ".xml"
 		print "<annotation>" > full_path
 		print "<annotator>" meta_annotator "</annotator>" > full_path
@@ -102,12 +98,10 @@ awk -v outdir="$dir" '
 		print "</size>" > full_path
 	}
 	
-	# Parse data for bounding boxes. These should always be between an opening <image>
-	# tag and a closing </image> tag.
+	# Parse data for bounding boxes and other object data. These should always be between an opening
+	# <image> tag and a closing </image> tag.
 	/<box/ {
 		object_name = $8
-		# Remove comma from end of name.
-		object_name = substr(object_name, 1, length(object_name)-1)
 		bndbox_xmin = $11
 		bndbox_ymin = $14
 		bndbox_xmax = $17
@@ -129,10 +123,9 @@ awk -v outdir="$dir" '
 		print "</object>" > full_path
 	}
 	
-	# Upon encountering a </image> tag, that signifies the end of a single
-	# annotated image. Create an XML file using the data saved thus far.
+	# A </image> tag signifies the end of a single annotated image.
 	/<\/image>/ {
-		# Close annotation tag.
+		# Close annotation tag in the XML file.
 		print "</annotation>" > full_path
 	}	
 ' $file

@@ -1,6 +1,6 @@
-# MBARI-RetinaNet-ODM
+# New Document# MBARI-RetinaNet-ODM
 
-This repo contains the Python and shell scripts pipeline to prepare data and train the GCP RetinaNet TPU model on the cloud for MBARI's Station M Images. All scripts run relative to our given data set. If you are using a different dataset, much of this repository won't work, but the primary methodology will still apply. This README will address these differences and what one might change in order to use a separate dataset. 
+This repo contains the Python and Bash scripts pipeline to prepare data and train the GCP RetinaNet TPU model MBARI's Station M Images via GCP's cloud architecture. All scripts run relative to our given data set. If you are using a different dataset, much of this repository won't work, but the primary methodology will still apply. This README will address these differences and what one might change in order to use a separate dataset. 
 
 ###### Authors
 
@@ -35,7 +35,7 @@ Something important not mentioned by GCP, is that the names of your images must 
 ```
 Error recorded from infeed: StringToNumberOp could not norrectly convert string
 ```
-you need to remove all non-numeric characters from your images before you create tfrecords. Which, in our case, is before using the `Dockerfile` that runs `create_tfrecord.py`. 
+you need to remove all non-numeric characters from your images before you create tfrecords, which in our case, is before using the `Dockerfile` that runs `create_tfrecord.py`. 
 
 `scripts/rename_data.sh` is a script that removes characters and extensions then propagates the names changes across all files necessary to create tfrecords via `create_tfrecord.py`. This script is only compatible with the `.pbtxt` file structure. However, one could use the same operations found in the script to rename their own data, revised as needed.
 
@@ -51,3 +51,25 @@ After ensuring correct naming conventions (in this case, only numbers in the fil
 If class labels within the protobuf text file (`labels.pbtxt`) do not match labels for the dataset, run `./scripts/enerate_labels.sh`
 
 If using a custom dataset, a different pipeline may be needed to create tfrecords. The dockerfile will run `create_tfrecord.py` to create tfrecords in accordance with the data provided by MBARI. Testing on a different dataset with protobuf formatting has not been done.
+
+If generating tfrecords for a custom dataset, the names for each element within the tfrecord will 
+
+#### Training on the cloud
+
+After preparing your data and creating the tfrecords, the next step is to train the RetinaNet model on the cloud. The process heavily mirrors the process detailed in the [GCP tutorial](https://cloud.google.com/tpu/docs/tutorials/retinanet), however some parts of the tutorials don't work by themselves. So here is our process:
+
+1. Create a GCP bucket and import your tfrecords into it using whatever file structure you would like. Take note of how you name the tfrecord file itself. 
+2. Start up your CTPU: `ctpu up`, then install the RetinaNet model: `git clone https://github.com/tensorflow/tpu/`.
+3. Link your ctpu instance to your storage bucket with: `export STORAGE_BUCKET=gs://YOUR-BUCKET-NAME`
+4.  In this repo `scripts/retina_train.sh` contains the script to train the RetinaNet model. Run the script on your CTPU, changing flags and paths as needed.
+	
+    If we look closer at the script itself, we can see what needs to change according to the data being used. 
+    
+	`export MODEL_DIR=${STORAGE_BUCKET}/retinanet-model` details the location to where RetinaNet will export the saved model in your bucket. In this case, your bucket will have a folder called 'retinanet-model', which will contain tensorflow checkpoints and the `saved_model.pb` with variables after training. The export parameters are not controlled by the user, as may be the case with other models (at least not without modifying the source code).
+    
+    The `retinanet_main.py` flag, `--training_file_pattern` details the location of the training data in the form of tfrecords. Currently, the script points to the exact name exported from `create_tfrecords.py`, located inside the storage bucket: `--training_file_pattern=${STORAGE_BUCKET}/MBARI_BENTHIC_2017_960x540_train.record`. This can be changed to meet the naming of other data and supports globbing. For instance, if you have multiple training records located in a folder called 'data' in your storage bucket and each record follows a name of 'train_NUMBER.record', the flag may look like: `--training_file_pattern=${STORAGE_BUCKET}/data/train_*.record`
+    
+    A hyperparameter not mentioned in documentation is `num_classes`. The GCP TPU RetinaNet implementation is made with the COCO dataset, which has 81 label classes. However, the model does not auto detect the number of classes that exist in your tfrecords, as may be the case with other models. So you must define the number of classes are in your data, otherwise it will assume and train for 81 classes. Define the number of classes using the hyperparameter flag like so: `--hparams=image_size=640,num_classes=9`. The model itself reshapes the images in a NxN shape denoted by `image_size=N`
+
+
+

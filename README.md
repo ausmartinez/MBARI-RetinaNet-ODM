@@ -1,4 +1,4 @@
-# New Document# MBARI-RetinaNet-ODM
+# MBARI-RetinaNet-ODM
 
 This repo contains the Python and Bash scripts pipeline to prepare data and train the GCP RetinaNet TPU model MBARI's Station M Images via GCP's cloud architecture. All scripts run relative to our given data set. If you are using a different dataset, much of this repository won't work, but the primary methodology will still apply. This README will address these differences and what one might change in order to use a separate dataset. 
 
@@ -19,7 +19,7 @@ This repo contains the Python and Bash scripts pipeline to prepare data and trai
 #### CVAT 
 Part of this project was setting up and configuring CVAT to label images. If you are attempting to install CVAT we have written some documentation on how to do so [here](https://docs.google.com/document/d/1277nbsISsqZBLsdxFQCm6-fhEhYLTtJpRFNCSxvR40I/edit?usp=sharing).
 
-## Preparing the data
+## Preparing the Data
 
 ##### *** All Scripts are destructive. Make sure to backup your data. ***
 
@@ -29,7 +29,7 @@ The `create_tfrecord.py` file generates tfrecords specific to our Station M data
 
 [Here](https://medium.com/mostly-ai/tensorflow-records-what-they-are-and-how-to-use-them-c46bc4bbb564) is a helpful tutorial for understanding tfrecords.
 
-#### Remove Non-numeric Characters from files
+#### Remove Non-numeric Characters from Files
 
 Something important not mentioned by GCP, is that the names of your images must **only** consist of numbers, and the file extension must be removed before creating tfrecords. If you run into an error when training on the cloud that looks something like:
 ```
@@ -54,7 +54,7 @@ If using a custom dataset, a different pipeline may be needed to create tfrecord
 
 If generating tfrecords for a custom dataset, the names for each element within the tfrecord will 
 
-#### Training on the cloud
+#### Training on the Cloud
 
 After preparing your data and creating the tfrecords, the next step is to train the RetinaNet model on the cloud. The process heavily mirrors the process detailed in the [GCP tutorial](https://cloud.google.com/tpu/docs/tutorials/retinanet), however some parts of the tutorials don't work by themselves. So here is our process:
 
@@ -69,7 +69,8 @@ After preparing your data and creating the tfrecords, the next step is to train 
     
     The `retinanet_main.py` flag, `--training_file_pattern` details the location of the training data in the form of tfrecords. Currently, the script points to the exact name exported from `create_tfrecords.py`, located inside the storage bucket: `--training_file_pattern=${STORAGE_BUCKET}/MBARI_BENTHIC_2017_960x540_train.record`. This can be changed to meet the naming of other data and supports globbing. For instance, if you have multiple training records located in a folder called 'data' in your storage bucket and each record follows a name of 'train_NUMBER.record', the flag may look like: `--training_file_pattern=${STORAGE_BUCKET}/data/train_*.record`
     
-    A hyperparameter not mentioned in documentation is `num_classes`. The GCP TPU RetinaNet implementation is made with the COCO dataset, which has 81 label classes. However, the model does not auto detect the number of classes that exist in your tfrecords, as may be the case with other models. So you must define the number of classes are in your data, otherwise it will assume and train for 81 classes. Define the number of classes using the hyperparameter flag like so: `--hparams=image_size=640,num_classes=9`. The model itself reshapes the images in a NxN shape denoted by `image_size=N`
+    A hyperparameter not mentioned in documentation is `num_classes`. The GCP TPU RetinaNet implementation is made with the COCO dataset, which has 81 label classes. However, the model does not auto detect the number of classes that exist in your tfrecords, as may be the case with other models. So you must define the number of classes in your data, otherwise it will assume and train for 81 classes. Define the number of classes using the hyperparameter flag like so: `--hparams=image_size=640,num_classes=9`. The model itself reshapes the images in a NxN shape denoted by `image_size=N`
 
+#### Running Inference
 
-
+Running inference is relatively simple. `inference/model_inference.py` contains some details written in the script's comments. The script itself contains the basic functionality to pass an unlabeled image through the model. If looking to pass a batch of images, additional functionality must be added, as the script simply uses a single image. This was done, as interpretation of the outputted weights was not achieved in this project. The [Focal Loss Research Paper](https://arxiv.org/pdf/1708.02002.pdf), from which RetinaNet is derived, says that RetinaNet's bounding box regression format is the same as Feature Pyramid Networks described by [this paper](http://openaccess.thecvf.com/content_cvpr_2017/papers/Lin_Feature_Pyramid_Networks_CVPR_2017_paper.pdf). However, proper interpretation of this output was above our skill level, and the inference methods provided by GCP are not fully compatible with the RetinaNet Model as of writing. We would suggest further research into the ins and outs of bounding box regression techniques to establish a solid understanding of this branch of machine learning before attempting to tackle the RetinaNet.

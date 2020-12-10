@@ -5,4 +5,4 @@ beautifulsoup4==4.6.0
 numpy==1.14.3
 Cython==0.28.2
 matplotlib==2.2.2
-tensorflow===1.13.0rc2
+tensorflow===2.4.0rc4

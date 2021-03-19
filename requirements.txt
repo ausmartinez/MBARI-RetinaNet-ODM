@@ -1,6 +1,6 @@
 lxml==4.2.5
 opencv-python==3.4.0.12
-pillow==5.1.0
+pillow==8.1.1
 beautifulsoup4==4.6.0
 numpy==1.14.3
 Cython==0.28.2

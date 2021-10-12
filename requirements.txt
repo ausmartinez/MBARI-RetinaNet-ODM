@@ -1,5 +1,5 @@
 lxml==4.2.5
-opencv-python==3.4.0.12
+opencv-python==3.4.7.28
 pillow==5.1.0
 beautifulsoup4==4.6.0
 numpy==1.14.3
